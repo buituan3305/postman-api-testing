@@ -1,0 +1,212 @@
+{
+  "info": {
+    "_postman_id": "1be3889c-5592-4e71-8c28-ac1d0f4a03e7",
+    "name": "APIkiemthubaiviet",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58783343",
+    "_collection_link": "https://go.postman.co/collection/58783343-1be3889c-5592-4e71-8c28-ac1d0f4a03e7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "TC01- lay danh sach bai viet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Du lieu tra ve la mang khong rong\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data).to.be.an(\"array\").that.is.not.empty;\r\n});\r\n\r\npm.test(\"Moi bai viet co du cac truong\", function () {\r\n    const data = pm.response.json();\r\n\r\n    data.forEach(function (post) {\r\n        pm.expect(post).to.have.all.keys(\r\n            \"userId\", \"id\", \"title\", \"body\"\r\n        );\r\n    });\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC02-xem chi tiet bai viet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Tra ve dung bai viet ID 1\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.eql(1);\r\n});\r\n\r\npm.test(\"Tieu de la chuoi khong rong\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.title).to.be.a(\"string\").that.is.not.empty;\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC03-them bai viet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Bai viet duoc cap ID\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.be.a(\"number\").above(0);\r\n});\r\n\r\npm.test(\"Phan hoi dung du lieu da gui\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.title).to.eql(\"Bai thuc hanh Postman\");\r\n    pm.expect(data.body).to.eql(\"Kiem thu chuc nang them bai viet\");\r\n    pm.expect(data.userId).to.eql(1);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Bai thuc hanh Postman\",\r\n  \"body\": \"Kiem thu chuc nang them bai viet\",\r\n  \"userId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC04 cap nhat bai viet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Dung ID bai viet can cap nhat\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.eql(1);\r\n});\r\n\r\npm.test(\"Phan hoi dung noi dung cap nhat\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.title).to.eql(\"Tieu de da cap nhat\");\r\n    pm.expect(data.body).to.eql(\"Noi dung da cap nhat bang Postman\");\r\n    pm.expect(data.userId).to.eql(1);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 1,\r\n  \"title\": \"Tieu de da cap nhat\",\r\n  \"body\": \"Noi dung da cap nhat bang Postman\",\r\n  \"userId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "tc05-xoa bai viet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Phan hoi la object rong\", function () {\r\n    pm.expect(pm.response.json()).to.deep.equal({});\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "tc06-bai viet khong ton tai",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code la 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"Khong tra ve du lieu bai viet\", function () {\r\n    pm.expect(pm.response.json()).to.deep.equal({});\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/999999",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "999999"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
